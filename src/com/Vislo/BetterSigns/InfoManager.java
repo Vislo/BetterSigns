@@ -18,8 +18,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class InfoManager implements Listener
 {
 	private static Connect connect;
-	private static Map<String,ServerStatus> status = new HashMap<String,ServerStatus>();
-	
+	private static Map<String, ServerStatus> status = new HashMap<String, ServerStatus>();
+
 	public InfoManager()
 	{
 		Bukkit.getServer().getPluginManager().registerEvents(this, BetterSigns.getInstance());
@@ -27,14 +27,17 @@ public class InfoManager implements Listener
 		connect.registerEvents(this);
 		startSendingTimer();
 	}
+
 	public static void writeServerStatus(String username, ServerStatus st)
 	{
 		status.put(username, st);
 	}
+
 	public static ServerStatus getServerStatus(String username)
 	{
 		return status.get(username);
 	}
+
 	private void startSendingTimer()
 	{
 		new BukkitRunnable()
@@ -42,38 +45,39 @@ public class InfoManager implements Listener
 			@Override
 			public void run()
 			{
-				int onlinePlayers = Bukkit.getOnlinePlayers().length;
 				String motd = Bukkit.getMotd();
 				if (connect == null || !connect.isConnected())
 					return;
-				String username = connect.getSettings().getUsername() + ",";
-				String usersOnline = onlinePlayers + ",";
-				String maxUsers = Bukkit.getMaxPlayers() + ",";
+				String username = connect.getSettings().getUsername();
+				String usersOnline = Bukkit.getOnlinePlayers().length + "";
+				String maxUsers = Bukkit.getMaxPlayers() + "";
 				try
 				{
-					MessageRequest request = new MessageRequest(Collections.<String> emptyList(), "BetterSigns", username + usersOnline + maxUsers + motd);
+					MessageRequest request = new MessageRequest(Collections.<String> emptyList(), "BetterSigns", username + ",," + usersOnline + ",," + maxUsers + ",," + motd);
 					connect.request(request);
 				} catch (UnsupportedEncodingException | RequestException e)
 				{
 					e.printStackTrace();
 				}
 			}
-			
+
 		}.runTaskTimer(BetterSigns.getInstance(), Config.getDelaySeconds(), Config.getDelaySeconds());
 	}
+
 	public static Connect getLilyPad()
 	{
 		return connect;
 	}
+
 	@EventListener
 	public void onMessage(MessageEvent event)
 	{
-		if(event.getChannel().equalsIgnoreCase("BetterSigns"))
+		if (event.getChannel().equalsIgnoreCase("BetterSigns"))
 		{
 			String[] data = null;
 			try
 			{
-				data = event.getMessageAsString().split(",");
+				data = event.getMessageAsString().split(",,");
 			} catch (UnsupportedEncodingException e)
 			{
 				e.printStackTrace();
@@ -82,7 +86,11 @@ public class InfoManager implements Listener
 			String usr = data[0];
 			String usersOnline = data[1];
 			String maxUsers = data[2];
-			String motd = data[3];
+			String motd = "";
+			if (data.length == 4)
+			{
+				motd = data[3];
+			}
 			SignManager.updateSigns(usr, usersOnline, maxUsers, motd);
 		}
 	}

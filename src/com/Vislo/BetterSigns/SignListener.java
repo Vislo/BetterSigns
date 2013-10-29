@@ -41,7 +41,7 @@ public class SignListener implements Listener
 	@EventHandler
 	public void clickSign(PlayerInteractEvent e)
 	{
-		if (e.getClickedBlock() == null && e.getClickedBlock().getState() == null)
+		if (e.getClickedBlock() == null || e.getClickedBlock().getState() == null)
 			return;
 		if (!(e.getClickedBlock().getState() instanceof Sign))
 			return;

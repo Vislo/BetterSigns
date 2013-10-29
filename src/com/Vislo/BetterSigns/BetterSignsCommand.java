@@ -27,19 +27,14 @@ public class BetterSignsCommand implements CommandExecutor
 			sender.sendMessage(ChatColor.RED + "This command can only be executed in-game.");
 			return true;
 		}
-
+			
 		Player p = (Player) sender;
-		if (args[0].equalsIgnoreCase("create") && (sender.hasPermission("bettersigns.create") || sender.hasPermission("bettersigns.*")))
+		if (args.length == 2 && args[0].equalsIgnoreCase("create") && (sender.hasPermission("bettersigns.create") || sender.hasPermission("bettersigns.*")))
 		{
 			Block sign = p.getTargetBlock(null, 10);
 			if (!(sign.getState() instanceof Sign))
 			{
 				p.sendMessage(ChatColor.RED + "You're not pointing a sign.");
-				return true;
-			}
-			if (args.length != 2)
-			{
-				p.sendMessage(ChatColor.RED + "Use the command properly: /bettersigns create username");
 				return true;
 			}
 			Sign _sign = (Sign) sign.getState();
@@ -66,7 +61,7 @@ public class BetterSignsCommand implements CommandExecutor
 			return true;
 		}
 
-		if (args[0].equalsIgnoreCase("reload") && (sender.hasPermission("bettersigns.reload") || sender.hasPermission("bettersigns.*")))
+		if (args.length == 1 && args[0].equalsIgnoreCase("reload") && (sender.hasPermission("bettersigns.reload") || sender.hasPermission("bettersigns.*")))
 		{
 			BetterSigns.getInstance().reloadConfig();
 			Config.loadConfig(BetterSigns.getInstance().getConfig(), true);
