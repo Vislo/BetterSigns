@@ -1,0 +1,10 @@
+Format:
+  - "Server!"
+  - "%status%"
+  - "&c%onusers%/%maxusers%"
+  - "%motd%"
+Status:
+  Online: "&aOnline"
+  Offline: "&cOffline"
+  Full: "&6Full"
+delayPing: 20

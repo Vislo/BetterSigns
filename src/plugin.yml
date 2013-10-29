@@ -1,0 +1,9 @@
+name: BetterSigns
+main: com.Vislo.BetterSigns.BetterSigns
+version: 1
+author: [Vislo]
+depend: [LilyPad-Connect]
+
+commands:
+    BetterSigns:
+        description: Main Command Of BetterSigns
